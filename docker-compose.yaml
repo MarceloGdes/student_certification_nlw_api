@@ -1,0 +1,15 @@
+# Criando e Configurando um container no docker
+
+version: '3.8'
+
+services: #Serviços que vai ser rodado no container
+  postgres_nlw:
+    container_name: postgres_nlw
+    image: postgres
+    ports:
+      - 5200:5432 #O postgres roda na 5432 mas vamos mapear para a 5200 no localhost
+    environment: #variaveis de ambiente realcionadas a imagem, mais informações tem na documentação do POSTGRES
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=pg_nlw
+    
