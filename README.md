@@ -130,5 +130,3 @@ BODY
   GET /ranking/top10
 ```
 
-Recebe dois números e retorna a sua soma.
-
