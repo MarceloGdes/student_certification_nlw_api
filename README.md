@@ -17,8 +17,8 @@ Até o momento fizemos funcionalidades basicas sem muitas validações de campos
 
 ## Stack utilizada
 
-**Back-end:** Java17, Spring Framework, Maeven, Lombok
-**Banco de Dados:** PostgreSQL, Docker
+- **Back-end:** Java17, Spring Framework, Maeven, Lombok
+- **Banco de Dados:** PostgreSQL, Docker
 
 
 ## Ferramentas Nescessarias
