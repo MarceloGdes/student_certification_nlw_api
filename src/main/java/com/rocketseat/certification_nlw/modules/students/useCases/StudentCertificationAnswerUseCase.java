@@ -34,33 +34,26 @@ public class StudentCertificationAnswerUseCase {
     private VerifyIfHasCertificationUseCase verifyIfHasCertificationUseCase;
 
     public CertificationStudentEntity execute(StudentCertificationAnswerDTO dto) throws Exception {
+        
         // Validando se já existe uma certificação para o usuario
-
         var hasCertification = this.verifyIfHasCertificationUseCase
                 .execute(new VerifyHasCertificationDTO(dto.getEmail(), dto.getTechnology()));
         if (hasCertification) {
-            throw new Exception("Você ja tem uma certificação nessa tecnologia");
+            throw new Exception("Você já tem uma certificação nessa tecnologia");
         }
 
-        // Buscando alternativas das perguntas
         // Buscando as questions referente a technologia dentro do repositório
         List<QuestionEntity> questionsEntity = questionRepository.findByTechnology(dto.getTechnology());
 
         List<AnswersCertificationEntity> answersCertifications = new ArrayList<>();
 
-        // Contador de acertos
-        // Usamos o Atomic pois não conseguimos manipular uma variavel normal como int
-        // dentro de uma expressão lambda
+        //Contador de acertos
         AtomicInteger correctAwnsers = new AtomicInteger(0);
 
-        // Percorrendo a lista de perguntas respondidas pelo estudante e para cada
-        // pergunta
+        // Percorrendo a lista de perguntas respondidas pelo estudante e para cada pergunta
         dto.getQuestionsAnswers().stream().forEach(questionAnswer -> {
 
             // mapeando as questôes repondidas com as questões do nosso banco
-            // cada question vai percorrer a lista de questionsEntity comparando o ID das
-            // duas e no final pegando o primeiro resulta (só tem 1 resultado pois é ID) e
-            // dadndo um .get para retornar um QuestionEntity
             var question = questionsEntity.stream()
                     .filter(q -> q.getId().equals(questionAnswer.getQuestionID())).findFirst().get();
 
@@ -76,10 +69,8 @@ public class StudentCertificationAnswerUseCase {
                 questionAnswer.setCorrect(false);
             }
 
-            // Adicionando as perguntas com a validação das repostas no array de
-            // answersCertifications que pósteriormente vão ser salvas no banco
-            var answersCertificationEntity = AnswersCertificationEntity.builder() // COnstruindo a entidade e setando as
-                                                                                  // propriedades
+            // Adicionando as perguntas com a validação das repostas no array de answersCertifications
+            var answersCertificationEntity = AnswersCertificationEntity.builder() 
                     .awnserID(questionAnswer.getAlternativeID())
                     .questionID(questionAnswer.getQuestionID())
                     .isCorrect(questionAnswer.isCorrect()).build();
